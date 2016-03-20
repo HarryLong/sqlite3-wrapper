@@ -13,6 +13,9 @@ public:
 
     friend std::ostream& operator<<(std::ostream& os, const Sqlite3Type& sqlitetype);
 
+    bool operator ==(const Sqlite3Type& other) {return this->name() == other.name();}
+    bool operator ==(const std::string& other) {return this->name() == other;}
+
 private:
     const std::string mName;
 };
@@ -20,31 +23,36 @@ private:
 class Sqlite3Null : public Sqlite3Type
 {
 public:
-    Sqlite3Null() : Sqlite3Type("NULL") {}
+    static const std::string _NAME;
+    Sqlite3Null() : Sqlite3Type(_NAME) {}
 };
 
 class Sqlite3Integer : public Sqlite3Type
 {
 public:
-    Sqlite3Integer() : Sqlite3Type("INTEGER") {}
+    static const std::string _NAME;
+    Sqlite3Integer() : Sqlite3Type(_NAME) {}
 };
 
 class Sqlite3Real : public Sqlite3Type
 {
 public:
-    Sqlite3Real() : Sqlite3Type("REAL") {}
+    static const std::string _NAME;
+    Sqlite3Real() : Sqlite3Type(_NAME) {}
 };
 
 class Sqlite3Text : public Sqlite3Type
 {
 public:
-    Sqlite3Text() : Sqlite3Type("TEXT") {}
+    static const std::string _NAME;
+    Sqlite3Text() : Sqlite3Type(_NAME) {}
 };
 
 class Sqlite3Blob : public Sqlite3Type
 {
 public:
-    Sqlite3Blob() : Sqlite3Type("BLOB") {}
+    static const std::string _NAME;
+    Sqlite3Blob() : Sqlite3Type(_NAME) {}
 };
 
 #endif // SQLITE_3_TYPES_H
@@ -54,9 +62,6 @@ public:
 //#include <set>
 //#include <string>
 //#include <vector>
-
-
-
 
 ///*******************
 // * DATABASE SCHEMA *

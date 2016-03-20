@@ -8,20 +8,23 @@
 class Sqlite3Db
 {
 public:
-    Sqlite3Db(std::string inName, std::string inPath);
+    Sqlite3Db(std::string inPath);
     ~Sqlite3Db();
     void addTable(const std::string & name, std::unique_ptr<Sqlite3Table> & inTable);
     friend std::ostream& operator<<(std::ostream& os, const Sqlite3Db& sqlitedb);
 
     sqlite3 * open();
 
+    Sqlite3Table * getTable(const std::string & inTableName);
+
 protected:
-    void executeCreationCode();
+    bool executeCreationCode();
 
 private:
-    std::string mName;
     std::string mPath;
     std::map<std::string, std::unique_ptr<Sqlite3Table>> mTables;
+
+    friend class DbTest;
 };
 
 #endif

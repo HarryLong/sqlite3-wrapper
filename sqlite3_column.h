@@ -14,10 +14,13 @@ public:
 
     std::string getCreationCode() const;
     virtual int bind(sqlite3_stmt * statement, void * valuePtr) const = 0;
-
+    virtual void value(sqlite3_stmt * statement, int columnIdx, void * valuePtr) const = 0;
+    Sqlite3Type getType() const { return mType; }
     friend std::ostream& operator<<(std::ostream& os, const Sqlite3Column& sqlitecolumn);
+    std::string name() const { return mName; }
 protected:
     const std::string mName;
+    std::string mBindName;
     const Sqlite3Type mType;
     const bool mPrimaryKey, mNotNull, mAutoIncrement;
 };
@@ -28,6 +31,7 @@ public:
     Sqlite3ColumnNull(std::string name, bool inPrimaryKey = false, bool inNotNull = false, bool autoincrement = false) :
         Sqlite3Column(name, Sqlite3Null(), inPrimaryKey, inNotNull, autoincrement) {}
     int bind(sqlite3_stmt * statement, void * valuePtr) const;
+    void value(sqlite3_stmt * statement, int columnIdx, void * valuePtr) const;
 };
 
 class Sqlite3ColumnInteger : public Sqlite3Column
@@ -36,6 +40,7 @@ public:
     Sqlite3ColumnInteger(std::string name, bool inPrimaryKey = false, bool inNotNull = false, bool autoincrement = false) :
         Sqlite3Column(name, Sqlite3Integer(), inPrimaryKey, inNotNull, autoincrement) {}
     int bind(sqlite3_stmt * statement, void * valuePtr) const;
+    void value(sqlite3_stmt * statement, int columnIdx, void * valuePtr) const;
 };
 
 class Sqlite3ColumnReal : public Sqlite3Column
@@ -44,6 +49,7 @@ public:
     Sqlite3ColumnReal(std::string name, bool inPrimaryKey = false, bool inNotNull = false, bool autoincrement = false) :
         Sqlite3Column(name,  Sqlite3Real(), inPrimaryKey, inNotNull, autoincrement) {}
     int bind(sqlite3_stmt * statement, void * valuePtr) const;
+    void value(sqlite3_stmt * statement, int columnIdx, void * valuePtr) const;
 };
 
 class Sqlite3ColumnText : public Sqlite3Column
@@ -52,6 +58,7 @@ public:
     Sqlite3ColumnText(std::string name, bool inPrimaryKey = false, bool inNotNull = false, bool autoincrement = false) :
         Sqlite3Column(name, Sqlite3Text(), inPrimaryKey, inNotNull, autoincrement) {}
     int bind(sqlite3_stmt * statement, void * valuePtr) const;
+    void value(sqlite3_stmt * statement, int columnIdx, void * valuePtr) const;
 };
 
 class Sqlite3ColumnBlob : public Sqlite3Column
@@ -60,6 +67,7 @@ public:
     Sqlite3ColumnBlob(std::string name, bool inPrimaryKey = false, bool inNotNull = false, bool autoincrement = false) :
         Sqlite3Column(name, Sqlite3Blob(), inPrimaryKey, inNotNull, autoincrement) {}
     int bind(sqlite3_stmt * statement, void * valuePtr) const;
+    void value(sqlite3_stmt * statement, int columnIdx, void * valuePtr) const;
 };
 
 
